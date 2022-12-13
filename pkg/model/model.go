@@ -5,6 +5,7 @@ import "time"
 type User struct {
 	Id               int                  `json:"id"`
 	SteamId          int                  `json:"steamId"`
+	Name             string               `json:"name"`
 	Hwid             string               `json:"hwid"`
 	Rank             int                  `json:"rank"`
 	FristConnectTime time.Time            `json:"fristConnectTime"`
@@ -15,5 +16,4 @@ type User struct {
 	KilledAnimals    int                  `json:"killedAnimals"`
 	Deaths           int                  `json:"deaths"`
 	Kits             map[string]time.Time `json:"kits"`
-	Raid             int                  `json:"raid"`
 }

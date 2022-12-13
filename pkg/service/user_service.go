@@ -31,21 +31,84 @@ func unmarshalUserBytes(bytes []byte) []model.User {
 
 	var users []model.User
 
-	for i := 1; i < len(arr); i++ {
+	for i := 1; i < len(arr)-1; i++ {
 		subArr := strings.Split(arr[i], "\r\n")
-		for j := 0; i < len(subArr); j++ {
-			var user model.User
+		var user model.User
+		for j := 0; j < len(subArr); j++ {
 			if j == 0 {
 				subArr[j] = strings.ReplaceAll(subArr[j], "[", "")
 				subArr[j] = strings.ReplaceAll(subArr[j], "]", "")
 				s, _ := strconv.Atoi(subArr[j])
 				user.SteamId = s
-				users = append(users, user)
-				break
+				continue
 			}
+			if strings.Contains(subArr[j], "USERNAME=") {
+				subArr[j] = strings.ReplaceAll(subArr[j], "USERNAME=", "")
+				user.Name = subArr[j]
+				continue
+			}
+			if strings.Contains(subArr[j], "HWID=") {
+				subArr[j] = strings.ReplaceAll(subArr[j], "HWID=", "")
+				user.Hwid = subArr[j]
+				continue
+			}
+			if strings.Contains(subArr[j], "RANK=") {
+				subArr[j] = strings.ReplaceAll(subArr[j], "RANK=", "")
+				s, _ := strconv.Atoi(subArr[j])
+				user.Rank = s
+				continue
+			}
+			if strings.Contains(subArr[j], "COUNTDOWN=") {
+				subArr[j] = strings.ReplaceAll(subArr[j], "COUNTDOWN=", "")
+			}
+			if strings.Contains(subArr[j], "LASTCONNECTDATE=") {
+				subArr[j] = strings.ReplaceAll(subArr[j], "USERNAME=", "")
+			}
+			if strings.Contains(subArr[j], "FIRSTCONNECTDATE=") {
+				subArr[j] = strings.ReplaceAll(subArr[j], "USERNAME=", "")
+			}
+			if strings.Contains(subArr[j], "BALANCE=") {
+				subArr[j] = strings.ReplaceAll(subArr[j], "BALANCE=", "")
+				s, _ := strconv.Atoi(subArr[j])
+				user.Balance = s
+				continue
+			}
+			if strings.Contains(subArr[j], "KILLEDPLAYERS=") {
+				subArr[j] = strings.ReplaceAll(subArr[j], "KILLEDPLAYERS=", "")
+				s, _ := strconv.Atoi(subArr[j])
+				user.KilledPlayers = s
+				continue
+			}
+			if strings.Contains(subArr[j], "KILLEDMUTANTS=") {
+				subArr[j] = strings.ReplaceAll(subArr[j], "KILLEDMUTANTS=", "")
+				s, _ := strconv.Atoi(subArr[j])
+				user.KilledMutants = s
+				continue
+			}
+			if strings.Contains(subArr[j], "KILLEDANIMALS=") {
+				subArr[j] = strings.ReplaceAll(subArr[j], "KILLEDANIMALS=", "")
+				s, _ := strconv.Atoi(subArr[j])
+				user.KilledAnimals = s
+				continue
+			}
+			if strings.Contains(subArr[j], "DEATHS=") {
+				subArr[j] = strings.ReplaceAll(subArr[j], "DEATHS=", "")
+				s, _ := strconv.Atoi(subArr[j])
+				user.Deaths = s
+				continue
+			}
+			if strings.Contains(subArr[j], "KILLEDMUTANTS=") {
+				subArr[j] = strings.ReplaceAll(subArr[j], "USERNAME=", "")
 
+			}
+			if strings.Contains(subArr[j], "KILLEDMUTANTS=") {
+				subArr[j] = strings.ReplaceAll(subArr[j], "USERNAME=", "")
+			}
+			if strings.Contains(subArr[j], "KILLEDMUTANTS=") {
+				subArr[j] = strings.ReplaceAll(subArr[j], "USERNAME=", "")
+			}
 		}
-
+		users = append(users, user)
 	}
 	fmt.Println(users[0])
 

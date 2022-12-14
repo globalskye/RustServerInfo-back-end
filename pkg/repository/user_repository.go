@@ -36,6 +36,15 @@ func (u UserRepository) GetAllUsersFiles() (map[string][]byte, error) {
 	result["topraid"] = rustTopRaidBytes
 	return result, nil
 }
+func (u UserRepository) GetAllClansFiles() (map[string][]byte, error) {
+	result := make(map[string][]byte, 1)
+	rustClansBytes, err := getBytesFromFile("rust_clans.txt", u.tool.ftp)
+	if err != nil {
+		return nil, err
+	}
+	result["clans"] = rustClansBytes
+	return result, err
+}
 func getBytesFromFile(path string, ftp *ftp.ServerConn) ([]byte, error) {
 	r, err := ftp.Retr(path)
 	if err != nil {

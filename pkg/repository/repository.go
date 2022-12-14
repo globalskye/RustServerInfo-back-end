@@ -18,6 +18,7 @@ func NewRepository(r *RepoTools) *Repository {
 
 type UserI interface {
 	GetAllUsersFiles() (map[string][]byte, error)
+	GetAllClansFiles() (map[string][]byte, error)
 }
 
 type RepoTools struct {

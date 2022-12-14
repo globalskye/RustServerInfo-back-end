@@ -25,6 +25,11 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
+	api := router.Group("/api")
+	{
+		api.GET("/users", h.GetAllUsers)
+		api.GET("/clans", h.GetAllClans)
+	}
 
 	return router
 

@@ -10,6 +10,7 @@ type Service struct {
 }
 type UserI interface {
 	GetAllUsers() ([]model.User, error)
+	GetAllClans() ([]model.Clan, error)
 }
 
 func NewService(repo *repository.Repository) *Service {

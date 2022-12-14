@@ -7,6 +7,7 @@ import (
 
 func NewFtpConnect() (*ftp.ServerConn, error) {
 	conn, err := ftp.Dial(os.Getenv("FTP_URI"))
+
 	if err != nil {
 		return nil, err
 	}

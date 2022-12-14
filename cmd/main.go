@@ -23,8 +23,7 @@ func main() {
 	repos := repository.NewRepository(tools) // working with db
 	services := service.NewService(repos)    // business logic
 	handlers := handler.NewHandler(services)
-	_, err := services.GetAllUsers()
-	fmt.Println(err)
+
 	srv := new(Back.Server)
 	fmt.Println(fmt.Sprintf("SERVER WORKING ON http://%s:%s", os.Getenv("APP_HOST"), os.Getenv("APP_PORT")))
 	if err := srv.Run(os.Getenv("APP_HOST"), os.Getenv("APP_PORT"), handlers.InitRoutes()); err != nil {

@@ -3,22 +3,33 @@ package model
 import "time"
 
 type User struct {
-	Id               int       `json:"id"`
-	SteamId          int       `json:"steamId"`
-	Name             string    `json:"name"`
-	Hwid             string    `json:"hwid"`
-	Rank             int       `json:"rank"`
-	FirstConnectTime time.Time `json:"firstConnectTime"`
-	LastConnectTime  time.Time `json:"lastConnectTime"`
-	Balance          int       `json:"balance"`
-	KilledPlayers    int       `json:"killedPlayers"`
-	KilledMutants    int       `json:"killedMutants"`
-	KilledAnimals    int       `json:"killedAnimals"`
-	Deaths           int       `json:"deaths"`
-	Kits             []KitInfo `json:"kits"`
+	Id               int       `json:"id" bson:"id"`
+	SteamId          int       `json:"steamId" bson:"steamId"`
+	Name             string    `json:"name" bson:"name"`
+	Hwid             string    `json:"hwid" bson:"hwid"`
+	Rank             int       `json:"rank" bson:"rank"`
+	FirstConnectTime time.Time `json:"firstConnectTime" bson:"firstConnectTime"`
+	LastConnectTime  time.Time `json:"lastConnectTime" bson:"lastConnectTime"`
+	Balance          int       `json:"balance" bson:"balance"`
+	KilledPlayers    int       `json:"killedPlayers" bson:"killedPlayers"`
+	KilledMutants    int       `json:"killedMutants" bson:"killedMutants"`
+	KilledAnimals    int       `json:"killedAnimals" bson:"killedAnimals"`
+	Deaths           int       `json:"deaths" bson:"deaths"`
+	Kits             []KitInfo `json:"kits" bson:"kits"`
 }
 type KitInfo struct {
-	Name       string    `json:"name"`
-	Countdown  time.Time `json:"countdown"`
-	Disposable bool      `json:"disposable"`
+	Name       string    `json:"name" bson:"name"`
+	Countdown  time.Time `json:"countdown" bson:"countdown"`
+	Disposable bool      `json:"disposable" bson:"disposable"`
+}
+type Clan struct {
+	Name            string    `json:"name" bson:"name"`
+	Abbr            string    `json:"abbr" bson:"abbr"`
+	LeaderSteamId   int       `json:"leaderSteamId" bson:"leaderSteamId"`
+	Created         time.Time `json:"created" bson:"created"`
+	Balance         int       `json:"balance" bson:"balance"`
+	Tax             int       `json:"tax" bson:"tax"`
+	Level           int       `json:"level" bson:"level"`
+	Experience      int       `json:"experience" bson:"experience"`
+	MembersSteamIds []int     `json:"membersSteamIds" bson:"membersSteamIds"`
 }

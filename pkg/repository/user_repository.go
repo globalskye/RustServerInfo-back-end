@@ -1,10 +1,5 @@
 package repository
 
-import (
-	"github.com/jlaffaye/ftp"
-	"io/ioutil"
-)
-
 type UserRepository struct {
 	tool *RepoTools
 }
@@ -14,19 +9,19 @@ func NewUserRepository(tool *RepoTools) *UserRepository {
 }
 func (u UserRepository) GetAllUsersFiles() (map[string][]byte, error) {
 	result := make(map[string][]byte, 4)
-	rustUsersBytes, err := getBytesFromFile("rust_users.txt", u.tool.ftp)
+	rustUsersBytes, err := GetBytesFromFile("rust_users.txt", u.tool.ftp)
 	if err != nil {
 		return nil, err
 	}
-	rustTopFarmBytes, err := getBytesFromFile("oxide/data/TopFarmer.json", u.tool.ftp)
+	rustTopFarmBytes, err := GetBytesFromFile("oxide/data/TopFarmer.json", u.tool.ftp)
 	if err != nil {
 		return nil, err
 	}
-	rustTopOnlineBytes, err := getBytesFromFile("oxide/data/TopOnline.json", u.tool.ftp)
+	rustTopOnlineBytes, err := GetBytesFromFile("oxide/data/TopOnline.json", u.tool.ftp)
 	if err != nil {
 		return nil, err
 	}
-	rustTopRaidBytes, err := getBytesFromFile("oxide/data/TopRaiders.json", u.tool.ftp)
+	rustTopRaidBytes, err := GetBytesFromFile("oxide/data/TopRaiders.json", u.tool.ftp)
 	if err != nil {
 		return nil, err
 	}
@@ -35,26 +30,4 @@ func (u UserRepository) GetAllUsersFiles() (map[string][]byte, error) {
 	result["toponline"] = rustTopOnlineBytes
 	result["topraid"] = rustTopRaidBytes
 	return result, nil
-}
-func (u UserRepository) GetAllClansFiles() (map[string][]byte, error) {
-	result := make(map[string][]byte, 1)
-	rustClansBytes, err := getBytesFromFile("rust_clans.txt", u.tool.ftp)
-	if err != nil {
-		return nil, err
-	}
-	result["clans"] = rustClansBytes
-	return result, err
-}
-func getBytesFromFile(path string, ftp *ftp.ServerConn) ([]byte, error) {
-	r, err := ftp.Retr(path)
-	if err != nil {
-		return nil, err
-	}
-	defer r.Close()
-
-	buf, err := ioutil.ReadAll(r)
-	if err != nil {
-		return nil, err
-	}
-	return buf, err
 }

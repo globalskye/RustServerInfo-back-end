@@ -7,14 +7,18 @@ import (
 
 type Service struct {
 	UserI
+	ClanI
 }
 type UserI interface {
 	GetAllUsers() ([]model.User, error)
+}
+type ClanI interface {
 	GetAllClans() ([]model.Clan, error)
 }
 
 func NewService(repo *repository.Repository) *Service {
 	return &Service{
 		UserI: NewUserService(repo.UserI),
+		ClanI: NewClanService(repo.ClanI),
 	}
 }

@@ -1,8 +1,10 @@
 package service
 
 import (
+	"encoding/json"
 	"github.com/globalskye/RustServerInfo-back-end.git/pkg/model"
 	"github.com/globalskye/RustServerInfo-back-end.git/pkg/repository"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -16,6 +18,16 @@ func NewUserService(repo repository.UserI) *UserService {
 	return &UserService{repo: repo}
 }
 
+type topFarm struct {
+	SteamId int `json:"steamId"`
+	Wood    int `json:"Дерева"`
+	Metal   int `json:"Метала"`
+	Sulfur  int `json:"Серы"`
+	Leather int `json:"Кожы"`
+	Cloth   int `json:"Ткани"`
+	Fat     int `json:"Жира"`
+}
+
 const TimeLayout = "01/02/2006 15:04:05"
 
 func (u UserService) GetAllUsers() ([]model.User, error) {
@@ -24,17 +36,52 @@ func (u UserService) GetAllUsers() ([]model.User, error) {
 		return nil, err
 	}
 	users := unmarshalUserBytes(counter["users"])
-
+	sort.Slice(users, func(i, j int) bool {
+		return users[i].SteamId < users[j].SteamId
+	})
+	farm := unmarshalTopFarmBytes(counter["topfarm"])
+	sort.Slice(farm, func(i, j int) bool {
+		return farm[i].SteamId < farm[j].SteamId
+	})
+	online := unmarshalTopOnlineBytes(counter["toponline"])
+	raid := unmarshalTopRaidBytes(counter["topraid"])
+	for i, u := range users {
+		for _, f := range farm {
+			if u.SteamId == f.SteamId {
+				users[i].Farm = model.UserTopFarm{
+					SteamId: f.SteamId,
+					Cloth:   f.Cloth,
+					Fat:     f.Fat,
+					Leather: f.Leather,
+					Metal:   f.Metal,
+					Sulfur:  f.Sulfur,
+					Wood:    f.Wood,
+				}
+			}
+		}
+		users[i].Online = online[u.SteamId]
+		users[i].Raid = raid[u.SteamId]
+	}
 	return users, err
 }
-func (u UserService) GetAllClans() ([]model.Clan, error) {
-	counter, err := u.repo.GetAllClansFiles()
-	if err != nil {
-		return nil, err
-	}
-	clans := unmarshalClanBytes(counter["clans"])
-	return clans, err
+func unmarshalTopFarmBytes(bytes []byte) []topFarm {
+	var topFarm []topFarm
+	json.Unmarshal(bytes, &topFarm)
+	return topFarm
 }
+func unmarshalTopOnlineBytes(bytes []byte) map[int]float32 {
+	var topOnline map[int]float32
+	json.Unmarshal(bytes, &topOnline)
+
+	return topOnline
+}
+func unmarshalTopRaidBytes(bytes []byte) map[int]float32 {
+	var topRaid map[int]float32
+	json.Unmarshal(bytes, &topRaid)
+
+	return topRaid
+}
+
 func unmarshalUserBytes(bytes []byte) []model.User {
 	str := string(bytes)
 	arr := strings.Split(str, "\r\n\r\n")
@@ -130,72 +177,4 @@ func unmarshalUserBytes(bytes []byte) []model.User {
 		users = append(users, user)
 	}
 	return users
-}
-func unmarshalClanBytes(bytes []byte) []model.Clan {
-	str := string(bytes)
-	arr := strings.Split(str, "\r\n\r\n")
-
-	var clans []model.Clan
-	for i := 1; i < len(arr); i++ {
-		subArr := strings.Split(arr[i], "\r\n")
-		var clan model.Clan
-		for j := 1; j < len(subArr); j++ {
-			if strings.Contains(subArr[j], "NAME=") {
-				subArr[j] = strings.ReplaceAll(subArr[j], "NAME=", "")
-				clan.Name = subArr[j]
-				continue
-			}
-			if strings.Contains(subArr[j], "ABBREV=") {
-				subArr[j] = strings.ReplaceAll(subArr[j], "ABBREV=", "")
-				clan.Abbr = subArr[j]
-				continue
-			}
-			if strings.Contains(subArr[j], "LEADER=") {
-				subArr[j] = strings.ReplaceAll(subArr[j], "LEADER=", "")
-				s, _ := strconv.Atoi(subArr[j])
-				clan.LeaderSteamId = s
-				continue
-			}
-			if strings.Contains(subArr[j], "CREATED=") {
-				subArr[j] = strings.ReplaceAll(subArr[j], "CREATED=", "")
-				t, _ := time.Parse(TimeLayout, subArr[j])
-				clan.Created = t
-				continue
-			}
-			if strings.Contains(subArr[j], "BALANCE=") {
-				subArr[j] = strings.ReplaceAll(subArr[j], "BALANCE=", "")
-				s, _ := strconv.Atoi(subArr[j])
-				clan.Balance = s
-				continue
-			}
-			if strings.Contains(subArr[j], "TAX=") {
-				subArr[j] = strings.ReplaceAll(subArr[j], "TAX=", "")
-				s, _ := strconv.Atoi(subArr[j])
-				clan.Tax = s
-				continue
-			}
-			if strings.Contains(subArr[j], "LEVEL=") {
-				subArr[j] = strings.ReplaceAll(subArr[j], "LEVEL=", "")
-				s, _ := strconv.Atoi(subArr[j])
-				clan.Level = s
-				continue
-			}
-			if strings.Contains(subArr[j], "EXPERIENCE=") {
-				subArr[j] = strings.ReplaceAll(subArr[j], "EXPERIENCE=", "")
-				s, _ := strconv.Atoi(subArr[j])
-				clan.Experience = s
-				continue
-			}
-			if strings.Contains(subArr[j], "MEMBER=") {
-				subArr[j] = strings.ReplaceAll(subArr[j], "MEMBER=", "")
-				a := strings.Split(subArr[j], ",")
-				s, _ := strconv.Atoi(a[0])
-				clan.MembersSteamIds = append(clan.MembersSteamIds, s)
-				continue
-			}
-
-		}
-		clans = append(clans, clan)
-	}
-	return clans
 }

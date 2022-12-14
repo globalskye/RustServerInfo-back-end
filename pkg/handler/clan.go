@@ -5,10 +5,10 @@ import (
 	"net/http"
 )
 
-func (h *Handler) GetAllUsers(c *gin.Context) {
-	users, err := h.services.UserI.GetAllUsers()
+func (h *Handler) GetAllClans(c *gin.Context) {
+	clans, err := h.services.ClanI.GetAllClans()
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 	}
-	c.JSON(http.StatusOK, users)
+	c.JSON(http.StatusOK, clans)
 }

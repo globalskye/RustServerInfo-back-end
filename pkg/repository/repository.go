@@ -8,16 +8,20 @@ import (
 
 type Repository struct {
 	UserI
+	ClanI
 }
 
 func NewRepository(r *RepoTools) *Repository {
 	return &Repository{
 		UserI: NewUserRepository(r),
+		ClanI: NewClanRepository(r),
 	}
 }
 
 type UserI interface {
 	GetAllUsersFiles() (map[string][]byte, error)
+}
+type ClanI interface {
 	GetAllClansFiles() (map[string][]byte, error)
 }
 

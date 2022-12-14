@@ -6,6 +6,7 @@ import (
 	"github.com/globalskye/RustServerInfo-back-end.git/pkg/repository"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type UserService struct {
@@ -15,6 +16,8 @@ type UserService struct {
 func NewUserService(repo repository.UserI) *UserService {
 	return &UserService{repo: repo}
 }
+
+const TimeLayout = "01/02/2006 15:04:05"
 
 func (u UserService) GetAllUsers() ([]model.User, error) {
 	counter, err := u.repo.GetAllUsersFiles()
@@ -58,14 +61,33 @@ func unmarshalUserBytes(bytes []byte) []model.User {
 				user.Rank = s
 				continue
 			}
-			if strings.Contains(subArr[j], "COUNTDOWN=") {
-				subArr[j] = strings.ReplaceAll(subArr[j], "COUNTDOWN=", "")
+			if strings.Contains(subArr[j], "COUNTDOWN=kit.") {
+				subArr[j] = strings.ReplaceAll(subArr[j], "COUNTDOWN=kit.", "")
+				a := strings.Split(subArr[j], ",")
+				if a[1] == "0" {
+					user.Kits = append(user.Kits, model.KitInfo{
+						Name:       a[0],
+						Disposable: true,
+					})
+					continue
+				}
+				t, _ := time.Parse(TimeLayout, subArr[j])
+				user.Kits = append(user.Kits, model.KitInfo{
+					Name:      a[0],
+					Countdown: t,
+				})
 			}
 			if strings.Contains(subArr[j], "LASTCONNECTDATE=") {
-				subArr[j] = strings.ReplaceAll(subArr[j], "USERNAME=", "")
+				subArr[j] = strings.ReplaceAll(subArr[j], "LASTCONNECTDATE=", "")
+				t, _ := time.Parse(TimeLayout, subArr[j])
+				user.LastConnectTime = t
+				continue
 			}
 			if strings.Contains(subArr[j], "FIRSTCONNECTDATE=") {
-				subArr[j] = strings.ReplaceAll(subArr[j], "USERNAME=", "")
+				subArr[j] = strings.ReplaceAll(subArr[j], "FIRSTCONNECTDATE=", "")
+				t, _ := time.Parse(TimeLayout, subArr[j])
+				user.FirstConnectTime = t
+				continue
 			}
 			if strings.Contains(subArr[j], "BALANCE=") {
 				subArr[j] = strings.ReplaceAll(subArr[j], "BALANCE=", "")
@@ -96,16 +118,6 @@ func unmarshalUserBytes(bytes []byte) []model.User {
 				s, _ := strconv.Atoi(subArr[j])
 				user.Deaths = s
 				continue
-			}
-			if strings.Contains(subArr[j], "KILLEDMUTANTS=") {
-				subArr[j] = strings.ReplaceAll(subArr[j], "USERNAME=", "")
-
-			}
-			if strings.Contains(subArr[j], "KILLEDMUTANTS=") {
-				subArr[j] = strings.ReplaceAll(subArr[j], "USERNAME=", "")
-			}
-			if strings.Contains(subArr[j], "KILLEDMUTANTS=") {
-				subArr[j] = strings.ReplaceAll(subArr[j], "USERNAME=", "")
 			}
 		}
 		users = append(users, user)

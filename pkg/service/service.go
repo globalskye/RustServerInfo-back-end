@@ -11,6 +11,7 @@ type Service struct {
 }
 type UserI interface {
 	GetAllUsers() ([]model.User, error)
+	GetOnline() ([]string, error)
 }
 type ClanI interface {
 	GetAllClans() ([]model.Clan, error)

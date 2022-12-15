@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"time"
+)
 
 type User struct {
 	Id               int         `json:"id" bson:"id"`
@@ -35,13 +38,14 @@ type KitInfo struct {
 	Disposable bool      `json:"disposable" bson:"disposable"`
 }
 type Clan struct {
-	Name            string    `json:"name" bson:"name"`
-	Abbr            string    `json:"abbr" bson:"abbr"`
-	LeaderSteamId   int       `json:"leaderSteamId" bson:"leaderSteamId"`
-	Created         time.Time `json:"created" bson:"created"`
-	Balance         int       `json:"balance" bson:"balance"`
-	Tax             int       `json:"tax" bson:"tax"`
-	Level           int       `json:"level" bson:"level"`
-	Experience      int       `json:"experience" bson:"experience"`
-	MembersSteamIds []int     `json:"membersSteamIds" bson:"membersSteamIds"`
+	Id              primitive.ObjectID `json:"id" bson:"id"`
+	Name            string             `json:"name" bson:"name"`
+	Abbr            string             `json:"abbr" bson:"abbr"`
+	LeaderSteamId   int                `json:"leaderSteamId" bson:"leaderSteamId"`
+	Created         time.Time          `json:"created" bson:"created"`
+	Balance         int                `json:"balance" bson:"balance"`
+	Tax             int                `json:"tax" bson:"tax"`
+	Level           int                `json:"level" bson:"level"`
+	Experience      int                `json:"experience" bson:"experience"`
+	MembersSteamIds []int              `json:"membersSteamIds" bson:"membersSteamIds"`
 }

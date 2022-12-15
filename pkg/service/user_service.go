@@ -2,8 +2,11 @@ package service
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/globalskye/RustServerInfo-back-end.git/pkg/model"
 	"github.com/globalskye/RustServerInfo-back-end.git/pkg/repository"
+	"io/ioutil"
+	"net/http"
 	"sort"
 	"strconv"
 	"strings"
@@ -30,6 +33,30 @@ type topFarm struct {
 
 const TimeLayout = "01/02/2006 15:04:05"
 
+func (u UserService) GetOnline() ([]string, error) {
+	resp, err := http.Get("https://rage.hostfun.ru/players.php")
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode > 400 {
+		return nil, errors.New("Cannot get online")
+	}
+
+	defer resp.Body.Close()
+	bytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, errors.New("Cannot read response.body from https://rage.hostfun.ru/players.php")
+	}
+
+	s := string(bytes)
+	s = strings.ReplaceAll(s, " ", "")
+	s = strings.ReplaceAll(s, "\r\n", "")
+	arr := strings.Split(s, "<divclass='collapse'id='server_62_122_214_162_27019'><divclass='cardcard-body'style='display:inline-flex;'><p>")
+	subArr := strings.Split(arr[1], "</p>")
+	users := strings.Split(subArr[0], ",")
+
+	return users, err
+}
 func (u UserService) GetAllUsers() ([]model.User, error) {
 	counter, err := u.repo.GetAllUsersFiles()
 	if err != nil {

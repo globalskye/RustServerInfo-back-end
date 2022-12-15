@@ -29,6 +29,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	{
 		api.GET("/users", h.GetAllUsers)
 		api.GET("/clans", h.GetAllClans)
+		api.GET("/online", h.GetOnline)
 	}
 
 	return router

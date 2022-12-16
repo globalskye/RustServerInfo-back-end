@@ -19,9 +19,12 @@ func main() {
 		logrus.Fatalf("error env variables : %s", err.Error())
 	}
 
-	tools := repository.NewRepoTools()
-	repos := repository.NewRepository(tools) // working with db
-	services := service.NewService(repos)    // business logic
+	db, err := repository.NewMongoConnect()
+	if err != nil {
+		logrus.Fatalf(err.Error())
+	}
+	repos := repository.NewRepository(db) // working with db
+	services := service.NewService(repos) // business logic
 	handlers := handler.NewHandler(services)
 
 	srv := new(Back.Server)

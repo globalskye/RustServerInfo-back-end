@@ -6,39 +6,45 @@ import (
 )
 
 type User struct {
-	Id               int         `json:"id" bson:"id"`
-	SteamId          int         `json:"steamId" bson:"steamId"`
-	Name             string      `json:"name" bson:"name"`
-	Hwid             string      `json:"hwid" bson:"hwid"`
-	Rank             int         `json:"rank" bson:"rank"`
-	FirstConnectTime time.Time   `json:"firstConnectTime" bson:"firstConnectTime"`
-	LastConnectTime  time.Time   `json:"lastConnectTime" bson:"lastConnectTime"`
-	Balance          int         `json:"balance" bson:"balance"`
-	KilledPlayers    int         `json:"killedPlayers" bson:"killedPlayers"`
-	KilledMutants    int         `json:"killedMutants" bson:"killedMutants"`
-	KilledAnimals    int         `json:"killedAnimals" bson:"killedAnimals"`
-	Deaths           int         `json:"deaths" bson:"deaths"`
-	Kits             []KitInfo   `json:"kits" bson:"kits"`
-	Farm             UserTopFarm `json:"farm"`
-	Online           float32     `json:"online"`
-	Raid             float32     `json:"raid"`
+	Id               primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
+	SteamId          int                `json:"steamId" bson:"steamId"`
+	ClanName         string             `json:"clanName" bson:"clanName"`
+	Name             string             `json:"name" bson:"name"`
+	Hwid             string             `json:"hwid" bson:"hwid"`
+	Rank             int                `json:"rank" bson:"rank"`
+	FirstConnectTime time.Time          `json:"firstConnectTime" bson:"firstConnectTime"`
+	LastConnectTime  time.Time          `json:"lastConnectTime" bson:"lastConnectTime"`
+	Balance          int                `json:"balance" bson:"balance"`
+	KilledPlayers    int                `json:"killedPlayers" bson:"killedPlayers"`
+	KilledMutants    int                `json:"killedMutants" bson:"killedMutants"`
+	KilledAnimals    int                `json:"killedAnimals" bson:"killedAnimals"`
+	Deaths           int                `json:"deaths" bson:"deaths"`
+	Kits             []KitInfo          `json:"kits" bson:"kits"`
+	Farm             UserTopFarm        `json:"farm" bson:"farm"`
+	Online           float32            `json:"online" bson:"online"`
+	Raid             float32            `json:"raid" bson:"raid"`
 }
 type UserTopFarm struct {
-	SteamId int `json:"steamId"`
-	Wood    int `json:"wood"`
-	Metal   int `json:"metal"`
-	Sulfur  int `json:"sulfur"`
-	Leather int `json:"leather"`
-	Cloth   int `json:"cloth"`
-	Fat     int `json:"fat"`
+	Id      primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
+	SteamId int                `json:"steamId" bson:"steamId"`
+	Wood    int                `json:"wood" bson:"wood"`
+	Metal   int                `json:"metal" bson:"metal"`
+	Sulfur  int                `json:"sulfur" bson:"sulfur"`
+	Leather int                `json:"leather" bson:"leather"`
+	Cloth   int                `json:"cloth" bson:"cloth"`
+	Fat     int                `json:"fat" bson:"fat"`
 }
 type KitInfo struct {
 	Name       string    `json:"name" bson:"name"`
 	Countdown  time.Time `json:"countdown" bson:"countdown"`
 	Disposable bool      `json:"disposable" bson:"disposable"`
 }
+type Online struct {
+	Id     primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
+	Online []string           `json:"online" bson:"online"`
+}
 type Clan struct {
-	Id              primitive.ObjectID `json:"id" bson:"id"`
+	Id              primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
 	Name            string             `json:"name" bson:"name"`
 	Abbr            string             `json:"abbr" bson:"abbr"`
 	LeaderSteamId   int                `json:"leaderSteamId" bson:"leaderSteamId"`

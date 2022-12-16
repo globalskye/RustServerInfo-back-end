@@ -10,11 +10,11 @@ type Service struct {
 	ClanI
 }
 type UserI interface {
-	GetAllUsers() ([]model.User, error)
-	GetOnline() ([]string, error)
+	GetUsers() ([]model.User, error)
+	GetOnline() (model.Online, error)
 }
 type ClanI interface {
-	GetAllClans() ([]model.Clan, error)
+	GetClans() ([]model.Clan, error)
 }
 
 func NewService(repo *repository.Repository) *Service {

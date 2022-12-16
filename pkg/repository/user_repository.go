@@ -1,33 +1,42 @@
 package repository
 
+import (
+	"context"
+	"github.com/globalskye/RustServerInfo-back-end.git/pkg/model"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+)
+
 type UserRepository struct {
-	tool *RepoTools
+	db *mongo.Client
 }
 
-func NewUserRepository(tool *RepoTools) *UserRepository {
-	return &UserRepository{tool: tool}
+func (u UserRepository) GetUsers() ([]model.User, error) {
+	db := u.db.Database("global")
+	coll := db.Collection("users")
+	var result []model.User
+	cursor, err := coll.Find(context.Background(), bson.D{})
+	if err != nil {
+		return nil, err
+	}
+	if err = cursor.All(context.TODO(), &result); err != nil {
+		return nil, err
+	}
+	return result, err
 }
-func (u UserRepository) GetAllUsersFiles() (map[string][]byte, error) {
-	result := make(map[string][]byte, 4)
-	rustUsersBytes, err := GetBytesFromFile("rust_users.txt", u.tool.ftp)
+
+func (u UserRepository) GetOnline() (model.Online, error) {
+	db := u.db.Database("global")
+	coll := db.Collection("online")
+	var result model.Online
+	err := coll.FindOne(context.Background(), bson.D{}).Decode(&result)
 	if err != nil {
-		return nil, err
+		return model.Online{}, err
 	}
-	rustTopFarmBytes, err := GetBytesFromFile("oxide/data/TopFarmer.json", u.tool.ftp)
-	if err != nil {
-		return nil, err
-	}
-	rustTopOnlineBytes, err := GetBytesFromFile("oxide/data/TopOnline.json", u.tool.ftp)
-	if err != nil {
-		return nil, err
-	}
-	rustTopRaidBytes, err := GetBytesFromFile("oxide/data/TopRaiders.json", u.tool.ftp)
-	if err != nil {
-		return nil, err
-	}
-	result["users"] = rustUsersBytes
-	result["topfarm"] = rustTopFarmBytes
-	result["toponline"] = rustTopOnlineBytes
-	result["topraid"] = rustTopRaidBytes
-	return result, nil
+
+	return result, err
+}
+
+func NewUserRepository(db *mongo.Client) *UserRepository {
+	return &UserRepository{db: db}
 }

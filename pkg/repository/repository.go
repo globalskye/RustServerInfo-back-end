@@ -1,8 +1,7 @@
 package repository
 
 import (
-	"github.com/jlaffaye/ftp"
-	"github.com/sirupsen/logrus"
+	"github.com/globalskye/RustServerInfo-back-end.git/pkg/model"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -11,36 +10,17 @@ type Repository struct {
 	ClanI
 }
 
-func NewRepository(r *RepoTools) *Repository {
+func NewRepository(m *mongo.Client) *Repository {
 	return &Repository{
-		UserI: NewUserRepository(r),
-		ClanI: NewClanRepository(r),
+		UserI: NewUserRepository(m),
+		ClanI: NewClanRepository(m),
 	}
 }
 
 type UserI interface {
-	GetAllUsersFiles() (map[string][]byte, error)
+	GetUsers() ([]model.User, error)
+	GetOnline() (model.Online, error)
 }
 type ClanI interface {
-	GetAllClansFiles() (map[string][]byte, error)
-}
-
-type RepoTools struct {
-	ftp   *ftp.ServerConn
-	mongo *mongo.Database
-}
-
-func NewRepoTools() *RepoTools {
-	ftpConn, err := NewFtpConnect()
-	if err != nil {
-		logrus.Fatalf("failed to initialize ftp: %s", err.Error())
-	}
-	mongoConn, err := NewMongoConnect()
-	if err != nil {
-		logrus.Fatalf("failed to initialize mongoDb: %s", err.Error())
-	}
-	return &RepoTools{
-		ftp:   ftpConn,
-		mongo: mongoConn,
-	}
+	GetClans() ([]model.Clan, error)
 }

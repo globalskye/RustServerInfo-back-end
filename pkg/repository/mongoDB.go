@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func NewMongoConnect() (*mongo.Database, error) {
+func NewMongoConnect() (*mongo.Client, error) {
 
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(os.Getenv("MONGODB_URI")))
 	if err != nil {
@@ -18,7 +18,5 @@ func NewMongoConnect() (*mongo.Database, error) {
 		return nil, err
 	}
 
-	db := client.Database(os.Getenv("MONGODB_DATABASE"))
-
-	return db, err
+	return client, err
 }

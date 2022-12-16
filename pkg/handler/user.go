@@ -6,7 +6,7 @@ import (
 )
 
 func (h *Handler) GetAllUsers(c *gin.Context) {
-	users, err := h.services.UserI.GetAllUsers()
+	users, err := h.services.UserI.GetUsers()
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -15,12 +15,12 @@ func (h *Handler) GetAllUsers(c *gin.Context) {
 	return
 }
 func (h *Handler) GetOnline(c *gin.Context) {
-	users, err := h.services.UserI.GetOnline()
+	online, err := h.services.UserI.GetOnline()
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"users": users})
+	c.JSON(http.StatusOK, online)
 	return
 
 }

@@ -40,8 +40,9 @@ type KitInfo struct {
 	Disposable bool      `json:"disposable" bson:"disposable"`
 }
 type Online struct {
-	Id     primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
-	Online []string           `json:"online" bson:"online"`
+	Id    primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
+	Count int                `bson:"count" json:"count"`
+	Users []User             `json:"users" bson:"users"`
 }
 type Clan struct {
 	Id              primitive.ObjectID `bson:"_id" json:"_id,omitempty"`

@@ -30,6 +30,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.GET("/users", h.GetAllUsers)
 		api.GET("/clans", h.GetAllClans)
 		api.GET("/online", h.GetOnline)
+		api.GET("/topKillers", h.GetTopKillers)
+		api.GET("/topClans", h.GetTopClans)
+		api.GET("/topRaiders", h.GetTopRaiders)
+		api.GET("/userBySteamId/:steamId", h.GetUserBySteamId)
 	}
 
 	return router

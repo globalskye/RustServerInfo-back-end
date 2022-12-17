@@ -12,9 +12,14 @@ type Service struct {
 type UserI interface {
 	GetUsers() ([]model.User, error)
 	GetOnline() (model.Online, error)
+	GetTopKillers() ([]model.User, error)
+	GetTopRaiders() ([]model.User, error)
+	GetUserByName(name string) (model.User, error)
+	GetUserBySteamId(steamId int) (model.User, error)
 }
 type ClanI interface {
 	GetClans() ([]model.Clan, error)
+	GetTopClans() ([]model.Clan, error)
 }
 
 func NewService(repo *repository.Repository) *Service {

@@ -9,6 +9,10 @@ type ClanService struct {
 	repo repository.ClanI
 }
 
+func (c ClanService) GetClanByName(name string) (model.Clan, error) {
+	return c.repo.GetClanByName(name)
+}
+
 func (c ClanService) GetTopClans() ([]model.Clan, error) {
 	return c.repo.GetTopClans()
 }

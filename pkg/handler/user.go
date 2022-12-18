@@ -30,6 +30,17 @@ func (h *Handler) GetUserBySteamId(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 	return
 }
+func (h *Handler) GetUserByName(c *gin.Context) {
+	name := c.Param("name")
+
+	user, err := h.services.UserI.GetUserByName(name)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, user)
+	return
+}
 
 func (h *Handler) GetOnline(c *gin.Context) {
 	online, err := h.services.UserI.GetOnline()

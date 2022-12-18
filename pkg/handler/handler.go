@@ -34,6 +34,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.GET("/topClans", h.GetTopClans)
 		api.GET("/topRaiders", h.GetTopRaiders)
 		api.GET("/userBySteamId/:steamId", h.GetUserBySteamId)
+		api.GET("/userByName/:name", h.GetUserByName)
+		api.GET("/clanByName/:name", h.GetClanByName)
 	}
 
 	return router

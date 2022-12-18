@@ -40,19 +40,21 @@ type KitInfo struct {
 	Disposable bool      `json:"disposable" bson:"disposable"`
 }
 type Online struct {
-	Id    primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
-	Count int                `bson:"count" json:"count"`
-	Users []User             `json:"users" bson:"users"`
+	Id      primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
+	Count   int                `bson:"count" json:"count"`
+	Players []string           `json:"users" bson:"users"`
 }
 type Clan struct {
 	Id              primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
 	Name            string             `json:"name" bson:"name"`
 	Abbr            string             `json:"abbr" bson:"abbr"`
 	LeaderSteamId   int                `json:"leaderSteamId" bson:"leaderSteamId"`
+	Leader          User               `json:"leader" bson:"leader"`
 	Created         time.Time          `json:"created" bson:"created"`
 	Balance         int                `json:"balance" bson:"balance"`
 	Tax             int                `json:"tax" bson:"tax"`
 	Level           int                `json:"level" bson:"level"`
 	Experience      int                `json:"experience" bson:"experience"`
 	MembersSteamIds []int              `json:"membersSteamIds" bson:"membersSteamIds"`
+	Members         []User             `json:"members" bson:"members"`
 }

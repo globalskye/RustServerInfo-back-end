@@ -24,3 +24,13 @@ func (h *Handler) GetTopClans(c *gin.Context) {
 	c.JSON(http.StatusOK, clans)
 	return
 }
+func (h *Handler) GetClanByName(c *gin.Context) {
+	name := c.Param("name")
+	clan, err := h.services.ClanI.GetClanByName(name)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, clan)
+	return
+}

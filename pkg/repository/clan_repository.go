@@ -12,6 +12,18 @@ type ClanRepository struct {
 	db *mongo.Client
 }
 
+func (c ClanRepository) GetClanByName(name string) (model.Clan, error) {
+	db := c.db.Database("global")
+	coll := db.Collection("clans")
+
+	var result model.Clan
+	err := coll.FindOne(context.Background(), bson.D{{"name", name}}).Decode(&result)
+	if err != nil {
+		return model.Clan{}, err
+	}
+	return result, err
+}
+
 func (c ClanRepository) GetTopClans() ([]model.Clan, error) {
 	db := c.db.Database("global")
 	coll := db.Collection("clans")

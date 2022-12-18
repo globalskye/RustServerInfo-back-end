@@ -28,4 +28,5 @@ type UserI interface {
 type ClanI interface {
 	GetClans() ([]model.Clan, error)
 	GetTopClans() ([]model.Clan, error)
+	GetClanByName(name string) (model.Clan, error)
 }

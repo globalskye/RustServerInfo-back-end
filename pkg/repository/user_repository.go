@@ -12,6 +12,27 @@ type UserRepository struct {
 	db *mongo.Client
 }
 
+func (u UserRepository) GetTopTime() ([]model.User, error) {
+
+	db := u.db.Database("global")
+	coll := db.Collection("users")
+
+	queryOptions := &options.FindOptions{}
+	queryOptions.SetSort(bson.D{{"online", -1}})
+	queryOptions.SetLimit(10)
+
+	var result []model.User
+	cursor, err := coll.Find(context.Background(), bson.D{}, queryOptions)
+	if err != nil {
+		return nil, err
+	}
+	if err = cursor.All(context.TODO(), &result); err != nil {
+		return nil, err
+	}
+	return result, err
+
+}
+
 func (u UserRepository) GetUserBySteamId(steamId int) (model.User, error) {
 	db := u.db.Database("global")
 	coll := db.Collection("users")

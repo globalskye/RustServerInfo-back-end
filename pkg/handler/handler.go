@@ -17,7 +17,9 @@ func NewHandler(services *service.Service) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
-	router.Use(gin.Logger())
+	gin.SetMode(gin.ReleaseMode)
+
+	gin.Logger()
 	router.Use(cors.New(cors.Config{
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD"},
 		AllowHeaders:     []string{"*"},
@@ -33,9 +35,12 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.GET("/topKillers", h.GetTopKillers)
 		api.GET("/topClans", h.GetTopClans)
 		api.GET("/topRaiders", h.GetTopRaiders)
+		api.GET("/topOnline", h.GetTopOnline)
 		api.GET("/userBySteamId/:steamId", h.GetUserBySteamId)
 		api.GET("/userByName/:name", h.GetUserByName)
 		api.GET("/clanByName/:name", h.GetClanByName)
+		api.GET("/vk", h.GetVkPosts)
+		api.GET("/client", h.GameClientDownload)
 	}
 
 	return router

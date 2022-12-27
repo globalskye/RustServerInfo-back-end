@@ -71,3 +71,14 @@ func (h *Handler) GetTopKillers(c *gin.Context) {
 	c.JSON(http.StatusOK, users)
 	return
 }
+
+func (h *Handler) GetTopOnline(c *gin.Context) {
+
+	users, err := h.services.UserI.GetTopTime()
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, users)
+	return
+}

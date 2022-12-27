@@ -9,6 +9,10 @@ type UserService struct {
 	repo repository.UserI
 }
 
+func (u UserService) GetTopTime() ([]model.User, error) {
+	return u.repo.GetTopTime()
+}
+
 func (u UserService) GetUserBySteamId(steamId int) (model.User, error) {
 	return u.repo.GetUserBySteamId(steamId)
 }

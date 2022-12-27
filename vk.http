@@ -1,0 +1,4 @@
+GET https://api.vk.com/method/wall.get?owner_id=-150503574&count=10&v=5.131&access_token=vk1.a.zk4A496DDgj2liwq8JdDTkrEPXVCvEKqqvWiQ4h0E0snabzsFIi2KO8EvpN4pS9S6Uhp-X2LjCblllRLZ1ZliZRXDN3QRYe2tv19uBVA3hZY4g6fKa5H1Ovpd-NhMus5nJksh0u6afIKFsru9lUSyj2tvvkTOILz7Cihzu62C4aHXMTMzAOn1gg6RgOUnpih
+Accept: application/json
+
+###

@@ -27,17 +27,23 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
+	auth := router.Group("/auth")
+	{
+		auth.POST("/sign-up", h.signUp)
+		auth.POST("/sign-in", h.signIn)
+	}
+
 	api := router.Group("/api")
 	{
-		api.GET("/users", h.GetAllUsers)
+		api.GET("/players", h.GetAllPlayers)
 		api.GET("/clans", h.GetAllClans)
 		api.GET("/online", h.GetOnline)
 		api.GET("/topKillers", h.GetTopKillers)
 		api.GET("/topClans", h.GetTopClans)
 		api.GET("/topRaiders", h.GetTopRaiders)
 		api.GET("/topOnline", h.GetTopOnline)
-		api.GET("/userBySteamId/:steamId", h.GetUserBySteamId)
-		api.GET("/userByName/:name", h.GetUserByName)
+		api.GET("/playerBySteamId/:steamId", h.GetPlayerBySteamId)
+		api.GET("/playerByName/:name", h.GetPlayerByName)
 		api.GET("/clanByName/:name", h.GetClanByName)
 		api.GET("/vk", h.GetVkPosts)
 		api.GET("/client", h.GameClientDownload)

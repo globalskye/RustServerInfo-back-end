@@ -6,27 +6,34 @@ import (
 )
 
 type Repository struct {
-	UserI
+	PlayerI
+	Authorization
 	ClanI
 	VkI
 }
 
 func NewRepository(m *mongo.Client) *Repository {
 	return &Repository{
-		UserI: NewUserRepository(m),
-		ClanI: NewClanRepository(m),
-		VkI:   NewVkRepository(m),
+		PlayerI:       NewPlayerRepository(m),
+		ClanI:         NewClanRepository(m),
+		VkI:           NewVkRepository(m),
+		Authorization: NewAuthRepository(m),
 	}
 }
 
-type UserI interface {
-	GetUsers() ([]model.User, error)
+type Authorization interface {
+	CreateUser(user model.User) (int, error)
+	GetUser(username, password string) (model.User, error)
+	GetUserById(id int) ([]model.User, error)
+}
+type PlayerI interface {
+	GetPlayers() ([]model.Player, error)
 	GetOnline() (model.Online, error)
-	GetTopKillers() ([]model.User, error)
-	GetTopRaiders() ([]model.User, error)
-	GetTopTime() ([]model.User, error)
-	GetUserByName(name string) (model.User, error)
-	GetUserBySteamId(steamId int) (model.User, error)
+	GetTopKillers() ([]model.Player, error)
+	GetTopRaiders() ([]model.Player, error)
+	GetTopTime() ([]model.Player, error)
+	GetPlayerByName(name string) (model.Player, error)
+	GetPlayerBySteamId(steamId int) (model.Player, error)
 }
 type ClanI interface {
 	GetClans() ([]model.Clan, error)

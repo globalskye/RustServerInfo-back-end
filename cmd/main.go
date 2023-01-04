@@ -43,9 +43,6 @@ func start(ctx context.Context) error {
 	}
 
 	db, err := repository.NewMongoConnect()
-	if err != nil {
-		logrus.Fatalf(err.Error())
-	}
 	repos := repository.NewRepository(db) // working with db
 	services := service.NewService(repos) // business logic
 	handlers := handler.NewHandler(services)

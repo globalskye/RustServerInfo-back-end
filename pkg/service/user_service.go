@@ -5,38 +5,38 @@ import (
 	"github.com/globalskye/RustServerInfo-back-end.git/pkg/repository"
 )
 
-type UserService struct {
-	repo repository.UserI
+type PlayerService struct {
+	repo repository.PlayerI
 }
 
-func (u UserService) GetTopTime() ([]model.User, error) {
+func (u PlayerService) GetTopTime() ([]model.Player, error) {
 	return u.repo.GetTopTime()
 }
 
-func (u UserService) GetUserBySteamId(steamId int) (model.User, error) {
-	return u.repo.GetUserBySteamId(steamId)
+func (u PlayerService) GetPlayerBySteamId(steamId int) (model.Player, error) {
+	return u.repo.GetPlayerBySteamId(steamId)
 }
 
-func (u UserService) GetUserByName(name string) (model.User, error) {
-	return u.repo.GetUserByName(name)
+func (u PlayerService) GetPlayerByName(name string) (model.Player, error) {
+	return u.repo.GetPlayerByName(name)
 }
 
-func (u UserService) GetTopRaiders() ([]model.User, error) {
+func (u PlayerService) GetTopRaiders() ([]model.Player, error) {
 	return u.repo.GetTopRaiders()
 }
 
-func (u UserService) GetTopKillers() ([]model.User, error) {
+func (u PlayerService) GetTopKillers() ([]model.Player, error) {
 	return u.repo.GetTopKillers()
 }
 
-func (u UserService) GetUsers() ([]model.User, error) {
-	return u.repo.GetUsers()
+func (u PlayerService) GetPlayers() ([]model.Player, error) {
+	return u.repo.GetPlayers()
 }
 
-func (u UserService) GetOnline() (model.Online, error) {
+func (u PlayerService) GetOnline() (model.Online, error) {
 	return u.repo.GetOnline()
 }
 
-func NewUserService(repo repository.UserI) *UserService {
-	return &UserService{repo: repo}
+func NewPlayerService(repo repository.PlayerI) *PlayerService {
+	return &PlayerService{repo: repo}
 }

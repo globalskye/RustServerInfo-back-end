@@ -8,20 +8,20 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type UserRepository struct {
+type PlayerRepository struct {
 	db *mongo.Client
 }
 
-func (u UserRepository) GetTopTime() ([]model.User, error) {
+func (u PlayerRepository) GetTopTime() ([]model.Player, error) {
 
 	db := u.db.Database("global")
-	coll := db.Collection("users")
+	coll := db.Collection("players")
 
 	queryOptions := &options.FindOptions{}
 	queryOptions.SetSort(bson.D{{"online", -1}})
 	queryOptions.SetLimit(10)
 
-	var result []model.User
+	var result []model.Player
 	cursor, err := coll.Find(context.Background(), bson.D{}, queryOptions)
 	if err != nil {
 		return nil, err
@@ -33,39 +33,39 @@ func (u UserRepository) GetTopTime() ([]model.User, error) {
 
 }
 
-func (u UserRepository) GetUserBySteamId(steamId int) (model.User, error) {
+func (u PlayerRepository) GetPlayerBySteamId(steamId int) (model.Player, error) {
 	db := u.db.Database("global")
-	coll := db.Collection("users")
+	coll := db.Collection("players")
 
-	var result model.User
+	var result model.Player
 	err := coll.FindOne(context.Background(), bson.D{{"steamId", steamId}}).Decode(&result)
 	if err != nil {
-		return model.User{}, err
+		return model.Player{}, err
 	}
 	return result, err
 }
 
-func (u UserRepository) GetUserByName(name string) (model.User, error) {
+func (u PlayerRepository) GetPlayerByName(name string) (model.Player, error) {
 	db := u.db.Database("global")
-	coll := db.Collection("users")
+	coll := db.Collection("players")
 
-	var result model.User
+	var result model.Player
 	err := coll.FindOne(context.Background(), bson.D{{"name", name}}).Decode(&result)
 	if err != nil {
-		return model.User{}, err
+		return model.Player{}, err
 	}
 	return result, err
 }
 
-func (u UserRepository) GetTopRaiders() ([]model.User, error) {
+func (u PlayerRepository) GetTopRaiders() ([]model.Player, error) {
 	db := u.db.Database("global")
-	coll := db.Collection("users")
+	coll := db.Collection("players")
 
 	queryOptions := &options.FindOptions{}
 	queryOptions.SetSort(bson.D{{"raid", -1}})
 	queryOptions.SetLimit(10)
 
-	var result []model.User
+	var result []model.Player
 	cursor, err := coll.Find(context.Background(), bson.D{}, queryOptions)
 	if err != nil {
 		return nil, err
@@ -76,15 +76,15 @@ func (u UserRepository) GetTopRaiders() ([]model.User, error) {
 	return result, err
 }
 
-func (u UserRepository) GetTopKillers() ([]model.User, error) {
+func (u PlayerRepository) GetTopKillers() ([]model.Player, error) {
 	db := u.db.Database("global")
-	coll := db.Collection("users")
+	coll := db.Collection("player")
 
 	queryOptions := &options.FindOptions{}
 	queryOptions.SetSort(bson.D{{"killedPlayers", -1}})
 	queryOptions.SetLimit(10)
 
-	var result []model.User
+	var result []model.Player
 	cursor, err := coll.Find(context.Background(), bson.D{}, queryOptions)
 	if err != nil {
 		return nil, err
@@ -95,10 +95,10 @@ func (u UserRepository) GetTopKillers() ([]model.User, error) {
 	return result, err
 }
 
-func (u UserRepository) GetUsers() ([]model.User, error) {
+func (u PlayerRepository) GetPlayers() ([]model.Player, error) {
 	db := u.db.Database("global")
-	coll := db.Collection("users")
-	var result []model.User
+	coll := db.Collection("player")
+	var result []model.Player
 	cursor, err := coll.Find(context.Background(), bson.D{})
 	if err != nil {
 		return nil, err
@@ -109,7 +109,7 @@ func (u UserRepository) GetUsers() ([]model.User, error) {
 	return result, err
 }
 
-func (u UserRepository) GetOnline() (model.Online, error) {
+func (u PlayerRepository) GetOnline() (model.Online, error) {
 	db := u.db.Database("global")
 	coll := db.Collection("online")
 	var result model.Online
@@ -121,6 +121,6 @@ func (u UserRepository) GetOnline() (model.Online, error) {
 	return result, err
 }
 
-func NewUserRepository(db *mongo.Client) *UserRepository {
-	return &UserRepository{db: db}
+func NewPlayerRepository(db *mongo.Client) *PlayerRepository {
+	return &PlayerRepository{db: db}
 }

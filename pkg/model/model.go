@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type User struct {
+type Player struct {
 	Id               primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
 	SteamId          int                `json:"steamId" bson:"steamId"`
 	ClanName         string             `json:"clanName" bson:"clanName"`
@@ -20,12 +20,12 @@ type User struct {
 	KilledAnimals    int                `json:"killedAnimals" bson:"killedAnimals"`
 	Deaths           int                `json:"deaths" bson:"deaths"`
 	Kits             []KitInfo          `json:"kits" bson:"kits"`
-	Farm             UserTopFarm        `json:"farm" bson:"farm"`
+	Farm             PlayerTopFarm      `json:"farm" bson:"farm"`
 	Online           float32            `json:"online" bson:"online"`
 	Raid             float32            `json:"raid" bson:"raid"`
 }
 
-type UserTopFarm struct {
+type PlayerTopFarm struct {
 	Id      primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
 	SteamId int                `json:"steamId" bson:"steamId"`
 	Wood    int                `json:"wood" bson:"wood"`
@@ -43,21 +43,21 @@ type KitInfo struct {
 type Online struct {
 	Id      primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
 	Count   int                `bson:"count" json:"count"`
-	Players []string           `json:"users" bson:"users"`
+	Players []string           `json:"Players" bson:"Players"`
 }
 type Clan struct {
 	Id              primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
 	Name            string             `json:"name" bson:"name"`
 	Abbr            string             `json:"abbr" bson:"abbr"`
 	LeaderSteamId   int                `json:"leaderSteamId" bson:"leaderSteamId"`
-	Leader          User               `json:"leader" bson:"leader"`
+	Leader          Player             `json:"leader" bson:"leader"`
 	Created         time.Time          `json:"created" bson:"created"`
 	Balance         int                `json:"balance" bson:"balance"`
 	Tax             int                `json:"tax" bson:"tax"`
 	Level           int                `json:"level" bson:"level"`
 	Experience      int                `json:"experience" bson:"experience"`
 	MembersSteamIds []int              `json:"membersSteamIds" bson:"membersSteamIds"`
-	Members         []User             `json:"members" bson:"members"`
+	Members         []Player           `json:"members" bson:"members"`
 }
 
 type VkPost struct {
@@ -94,7 +94,7 @@ type VkPost struct {
 						Url    string `json:"url"`
 					} `json:"sizes"`
 					Text    string `json:"text"`
-					UserId  int    `json:"user_id"`
+					UserId  int    `json:"User_id"`
 					HasTags bool   `json:"has_tags"`
 				} `json:"photo,omitempty"`
 				Video struct {
@@ -160,4 +160,11 @@ type VkPost struct {
 			Edited        int     `json:"edited,omitempty"`
 		} `json:"items"`
 	} `json:"response"`
+}
+type User struct {
+	Id       primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
+	Username string             `json:"username" binding:"required"`
+	Balance  int                `bson:"balance" json:"balance"`
+	Password string             `json:"password" binding:"required"`
+	Role     string             `json:"role" `
 }

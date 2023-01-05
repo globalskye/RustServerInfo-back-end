@@ -14,6 +14,7 @@ type Service struct {
 }
 type Authorization interface {
 	CreateUser(user model.User) (int, error)
+	CheckUserName(name string) (bool, error)
 	GenerateAccessToken(username, password string) (string, error)
 	ParseAccessToken(token string) (primitive.ObjectID, error)
 	GetUserById(id int) ([]model.User, error)

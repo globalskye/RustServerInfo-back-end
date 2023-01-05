@@ -16,6 +16,13 @@ type AuthService struct {
 	repo repository.Authorization
 }
 
+func (a *AuthService) CheckUserName(name string) (bool, error) {
+	user, err := a.repo.GetUserByName(name)
+	fmt.Println(user)
+	fmt.Println(err)
+	return false, err
+}
+
 func (a *AuthService) GetUserById(id int) ([]model.User, error) {
 	return a.repo.GetUserById(id)
 }
@@ -49,7 +56,7 @@ func (a *AuthService) GenerateAccessToken(username, password string) (string, er
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, &jwtTokenClaims{
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  time.Now().Unix(),
-			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
+			ExpiresAt: time.Now().Add(168 * time.Hour).Unix(), // 7days
 		},
 		UserId: user.Id,
 	})

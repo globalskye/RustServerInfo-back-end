@@ -43,3 +43,6 @@ func (h *Handler) signIn(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"accessToken": token})
 }
+func (h *Handler) checkUserName(c *gin.Context) {
+
+}

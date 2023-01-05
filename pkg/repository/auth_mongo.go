@@ -12,6 +12,10 @@ type AuthRepository struct {
 	db *mongo.Client
 }
 
+func (a *AuthRepository) GetUserByName(name string) (model.User, error) {
+
+}
+
 func (a *AuthRepository) GetUserById(id int) ([]model.User, error) {
 	panic("qwe")
 }

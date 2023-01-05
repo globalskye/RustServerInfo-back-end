@@ -25,6 +25,7 @@ type Authorization interface {
 	CreateUser(user model.User) (int, error)
 	GetUser(username, password string) (model.User, error)
 	GetUserById(id int) ([]model.User, error)
+	GetUserByName(name string) (model.User, error)
 }
 type PlayerI interface {
 	GetPlayers() ([]model.Player, error)

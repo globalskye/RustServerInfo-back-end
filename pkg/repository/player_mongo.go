@@ -8,14 +8,17 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+const dbName = "global"
+const collectionName = "players"
+
 type PlayerRepository struct {
 	db *mongo.Client
 }
 
 func (u PlayerRepository) GetTopTime() ([]model.Player, error) {
 
-	db := u.db.Database("global")
-	coll := db.Collection("players")
+	db := u.db.Database(dbName)
+	coll := db.Collection(collectionName)
 
 	queryOptions := &options.FindOptions{}
 	queryOptions.SetSort(bson.D{{"online", -1}})
@@ -34,8 +37,8 @@ func (u PlayerRepository) GetTopTime() ([]model.Player, error) {
 }
 
 func (u PlayerRepository) GetPlayerBySteamId(steamId int) (model.Player, error) {
-	db := u.db.Database("global")
-	coll := db.Collection("players")
+	db := u.db.Database(dbName)
+	coll := db.Collection(collectionName)
 
 	var result model.Player
 	err := coll.FindOne(context.Background(), bson.D{{"steamId", steamId}}).Decode(&result)
@@ -46,8 +49,8 @@ func (u PlayerRepository) GetPlayerBySteamId(steamId int) (model.Player, error) 
 }
 
 func (u PlayerRepository) GetPlayerByName(name string) (model.Player, error) {
-	db := u.db.Database("global")
-	coll := db.Collection("players")
+	db := u.db.Database(dbName)
+	coll := db.Collection(collectionName)
 
 	var result model.Player
 	err := coll.FindOne(context.Background(), bson.D{{"name", name}}).Decode(&result)
@@ -58,8 +61,8 @@ func (u PlayerRepository) GetPlayerByName(name string) (model.Player, error) {
 }
 
 func (u PlayerRepository) GetTopRaiders() ([]model.Player, error) {
-	db := u.db.Database("global")
-	coll := db.Collection("players")
+	db := u.db.Database(dbName)
+	coll := db.Collection(collectionName)
 
 	queryOptions := &options.FindOptions{}
 	queryOptions.SetSort(bson.D{{"raid", -1}})
@@ -77,8 +80,8 @@ func (u PlayerRepository) GetTopRaiders() ([]model.Player, error) {
 }
 
 func (u PlayerRepository) GetTopKillers() ([]model.Player, error) {
-	db := u.db.Database("global")
-	coll := db.Collection("player")
+	db := u.db.Database(dbName)
+	coll := db.Collection(collectionName)
 
 	queryOptions := &options.FindOptions{}
 	queryOptions.SetSort(bson.D{{"killedPlayers", -1}})
@@ -96,8 +99,8 @@ func (u PlayerRepository) GetTopKillers() ([]model.Player, error) {
 }
 
 func (u PlayerRepository) GetPlayers() ([]model.Player, error) {
-	db := u.db.Database("global")
-	coll := db.Collection("player")
+	db := u.db.Database(dbName)
+	coll := db.Collection(collectionName)
 	var result []model.Player
 	cursor, err := coll.Find(context.Background(), bson.D{})
 	if err != nil {
@@ -110,7 +113,7 @@ func (u PlayerRepository) GetPlayers() ([]model.Player, error) {
 }
 
 func (u PlayerRepository) GetOnline() (model.Online, error) {
-	db := u.db.Database("global")
+	db := u.db.Database(dbName)
 	coll := db.Collection("online")
 	var result model.Online
 	err := coll.FindOne(context.Background(), bson.D{}).Decode(&result)

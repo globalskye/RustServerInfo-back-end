@@ -2,6 +2,7 @@ package repository
 
 import (
 	"github.com/globalskye/RustServerInfo-back-end.git/pkg/model"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -22,9 +23,9 @@ func NewRepository(m *mongo.Client) *Repository {
 }
 
 type Authorization interface {
-	CreateUser(user model.User) (int, error)
+	CreateUser(user model.User) (interface{}, error)
 	GetUser(username, password string) (model.User, error)
-	GetUserById(id int) ([]model.User, error)
+	GetUserById(id primitive.ObjectID) (model.User, error)
 	GetUserByName(name string) (model.User, error)
 }
 type PlayerI interface {

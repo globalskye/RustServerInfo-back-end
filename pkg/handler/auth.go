@@ -15,8 +15,11 @@ func (h *Handler) signUp(c *gin.Context) {
 	var user model.User
 
 	if err := c.BindJSON(&user); err != nil {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
+	}
+	if exist := h.services.CheckUserName(user.Username); exist {
+		c.JSON(http.StatusOK, gin.H{"error": "Пользователь уже существует"})
 	}
 	id, err := h.services.Authorization.CreateUser(user)
 	if err != nil {
@@ -25,7 +28,7 @@ func (h *Handler) signUp(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"id": id})
-
+	return
 }
 
 func (h *Handler) signIn(c *gin.Context) {
@@ -42,7 +45,16 @@ func (h *Handler) signIn(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"accessToken": token})
+	return
 }
 func (h *Handler) checkUserName(c *gin.Context) {
+	username := c.Param("name")
 
+	if exist := h.services.CheckUserName(username); exist {
+		c.JSON(http.StatusOK, gin.H{"message": "Пользователь уже существует"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Имя свободно"})
+	return
 }

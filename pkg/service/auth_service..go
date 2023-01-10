@@ -8,6 +8,7 @@ import (
 	"github.com/globalskye/RustServerInfo-back-end.git/pkg/model"
 	"github.com/globalskye/RustServerInfo-back-end.git/pkg/repository"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"os"
 	"time"
 )
@@ -16,14 +17,17 @@ type AuthService struct {
 	repo repository.Authorization
 }
 
-func (a *AuthService) CheckUserName(name string) (bool, error) {
-	user, err := a.repo.GetUserByName(name)
-	fmt.Println(user)
-	fmt.Println(err)
-	return false, err
+func (a *AuthService) CheckUserName(name string) bool {
+	_, err := a.repo.GetUserByName(name)
+
+	if err != mongo.ErrNoDocuments {
+		return true
+	}
+
+	return false
 }
 
-func (a *AuthService) GetUserById(id int) ([]model.User, error) {
+func (a *AuthService) GetUserById(id primitive.ObjectID) (model.User, error) {
 	return a.repo.GetUserById(id)
 }
 
@@ -36,7 +40,7 @@ type jwtTokenClaims struct {
 	UserId primitive.ObjectID `json:"_id"`
 }
 
-func (a *AuthService) CreateUser(user model.User) (int, error) {
+func (a *AuthService) CreateUser(user model.User) (interface{}, error) {
 	user.Password = generateHashPassword(user.Password)
 	user.Id = primitive.NewObjectID()
 	return a.repo.CreateUser(user)

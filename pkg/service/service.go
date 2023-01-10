@@ -13,11 +13,11 @@ type Service struct {
 	VkI
 }
 type Authorization interface {
-	CreateUser(user model.User) (int, error)
-	CheckUserName(name string) (bool, error)
+	CreateUser(user model.User) (interface{}, error)
+	CheckUserName(name string) bool
 	GenerateAccessToken(username, password string) (string, error)
 	ParseAccessToken(token string) (primitive.ObjectID, error)
-	GetUserById(id int) ([]model.User, error)
+	GetUserById(id primitive.ObjectID) (model.User, error)
 }
 
 type PlayerI interface {

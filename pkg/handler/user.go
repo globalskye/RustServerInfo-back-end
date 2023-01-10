@@ -13,6 +13,7 @@ func (h *Handler) GetAllPlayers(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, players)
+
 	return
 }
 func (h *Handler) GetPlayerBySteamId(c *gin.Context) {

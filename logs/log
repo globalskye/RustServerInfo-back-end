@@ -1,0 +1,9 @@
+{"file":"C:/Players/global/Desktop/GOLANG DEEP LEARNING/DARKRUSTSITE/Back/cmd/main.go:39","func":"main.main.func1","level":"fatal","msg":"error to running http server : http: Server closed","time":"2022-12-27T07:33:15+03:00"}
+{"file":"C:/Players/global/Desktop/GOLANG DEEP LEARNING/DARKRUSTSITE/Back/cmd/main.go:39","func":"main.main.func1","level":"fatal","msg":"error to running http server : http: Server closed","time":"2022-12-27T07:35:21+03:00"}
+{"file":"C:/Players/global/Desktop/GOLANG DEEP LEARNING/DARKRUSTSITE/Back/cmd/main.go:39","func":"main.main.func1","level":"fatal","msg":"error to running http server : http: Server closed","time":"2022-12-27T07:35:27+03:00"}
+{"file":"C:/Players/global/Desktop/GOLANG DEEP LEARNING/DARKRUSTSITE/Back/cmd/main.go:61","func":"main.start","level":"info","msg":"server started","time":"2022-12-27T07:42:50+03:00"}
+{"file":"C:/Players/global/Desktop/GOLANG DEEP LEARNING/DARKRUSTSITE/Back/cmd/main.go:65","func":"main.start","level":"info","msg":"server stopped","time":"2022-12-27T07:42:52+03:00"}
+{"file":"C:/Players/global/Desktop/GOLANG DEEP LEARNING/DARKRUSTSITE/Back/cmd/main.go:56","func":"main.start.func1","level":"fatal","msg":"error to running http server : http: Server closed","time":"2022-12-27T07:42:52+03:00"}
+{"file":"C:/Players/global/Desktop/GOLANG DEEP LEARNING/DARKRUSTSITE/Back/cmd/main.go:61","func":"main.start","level":"info","msg":"server started","time":"2022-12-27T07:44:10+03:00"}
+{"file":"C:/Players/global/Desktop/GOLANG DEEP LEARNING/DARKRUSTSITE/Back/cmd/main.go:65","func":"main.start","level":"info","msg":"server stopped","time":"2022-12-27T07:44:13+03:00"}
+{"file":"C:/Players/global/Desktop/GOLANG DEEP LEARNING/DARKRUSTSITE/Back/cmd/main.go:56","func":"main.start.func1","level":"fatal","msg":"error to running http server : http: Server closed","time":"2022-12-27T07:44:13+03:00"}

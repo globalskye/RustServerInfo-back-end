@@ -19,7 +19,8 @@ func (h *Handler) signUp(c *gin.Context) {
 		return
 	}
 	if exist := h.services.CheckUserName(user.Username); exist {
-		c.JSON(http.StatusOK, gin.H{"error": "Пользователь уже существует"})
+		c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Пользователь уже существует"})
+		return
 	}
 	id, err := h.services.Authorization.CreateUser(user)
 	if err != nil {
@@ -48,10 +49,11 @@ func (h *Handler) signIn(c *gin.Context) {
 	return
 }
 func (h *Handler) checkUserName(c *gin.Context) {
+
 	username := c.Param("name")
 
 	if exist := h.services.CheckUserName(username); exist {
-		c.JSON(http.StatusOK, gin.H{"message": "Пользователь уже существует"})
+		c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Пользователь уже существует"})
 		return
 	}
 

@@ -21,7 +21,7 @@ type Player struct {
 	Deaths           int                `json:"deaths" bson:"deaths"`
 	Kits             []KitInfo          `json:"kits" bson:"kits"`
 	Farm             PlayerTopFarm      `json:"farm" bson:"farm"`
-	Online           float32            `json:"online" bson:"online"`
+	Online           int                `json:"online" bson:"online"`
 	Raid             float32            `json:"raid" bson:"raid"`
 }
 

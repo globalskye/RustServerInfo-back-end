@@ -42,7 +42,7 @@ func (h *Handler) userIdentity(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, err.Error())
 		return
 	}
-	user, err := h.services.Authorization.GetUserById(userId)
+	user, err := h.services.UserI.GetUserById(userId)
 	if err != mongo.ErrNoDocuments {
 		c.Set("role", user.Role)
 		c.Set("userId", userId)

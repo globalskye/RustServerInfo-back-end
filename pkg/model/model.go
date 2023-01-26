@@ -57,114 +57,51 @@ type Clan struct {
 	Level           int                `json:"level" bson:"level"`
 	Experience      int                `json:"experience" bson:"experience"`
 	MembersSteamIds []int              `json:"membersSteamIds" bson:"membersSteamIds"`
-	Members         []Player           `json:"members" bson:"members"`
+
+	Members []Player `json:"members" bson:"members"`
+}
+type VkPost struct {
+	Items []VkPostItem `bson:"items" json:"items"`
+}
+type VkPostItem struct {
+	Id        int    `json:"id" bson:"id"`
+	OwnerId   int    `json:"owner_id" bson:"ownerId"`
+	Date      int    `json:"date" bson:"date"`
+	Text      string `json:"text" bson:"text"`
+	ImageLink string `bson:"imageLink" json:"imageLink"`
+	VideoLink string `bson:"videoLink" json:"videoLink"`
 }
 
-type VkPost struct {
-	Response struct {
-		Count int `json:"count"`
-		Items []struct {
-			Id          int    `json:"id"`
-			FromId      int    `json:"from_id"`
-			OwnerId     int    `json:"owner_id"`
-			Date        int    `json:"date"`
-			PostponedId int    `json:"postponed_id,omitempty"`
-			MarkedAsAds int    `json:"marked_as_ads"`
-			CanDelete   int    `json:"can_delete"`
-			IsFavorite  bool   `json:"is_favorite"`
-			PostType    string `json:"post_type"`
-			Text        string `json:"text"`
-			CanEdit     int    `json:"can_edit,omitempty"`
-			CreatedBy   int    `json:"created_by,omitempty"`
-			CanPin      int    `json:"can_pin"`
-			IsPinned    int    `json:"is_pinned,omitempty"`
-			Attachments []struct {
-				Type  string `json:"type"`
-				Photo struct {
-					AlbumId   int    `json:"album_id"`
-					Date      int    `json:"date"`
-					Id        int    `json:"id"`
-					OwnerId   int    `json:"owner_id"`
-					AccessKey string `json:"access_key"`
-					PostId    int    `json:"post_id"`
-					Sizes     []struct {
-						Height int    `json:"height"`
-						Type   string `json:"type"`
-						Width  int    `json:"width"`
-						Url    string `json:"url"`
-					} `json:"sizes"`
-					Text    string `json:"text"`
-					UserId  int    `json:"User_id"`
-					HasTags bool   `json:"has_tags"`
-				} `json:"photo,omitempty"`
-				Video struct {
-					AccessKey     string `json:"access_key"`
-					CanComment    int    `json:"can_comment"`
-					CanEdit       int    `json:"can_edit"`
-					CanLike       int    `json:"can_like"`
-					CanRepost     int    `json:"can_repost"`
-					CanSubscribe  int    `json:"can_subscribe"`
-					CanAddToFaves int    `json:"can_add_to_faves"`
-					CanAdd        int    `json:"can_add"`
-					CanAttachLink int    `json:"can_attach_link"`
-					Comments      int    `json:"comments"`
-					Date          int    `json:"date"`
-					Description   string `json:"description"`
-					Duration      int    `json:"duration"`
-					Image         []struct {
-						Url         string `json:"url"`
-						Width       int    `json:"width"`
-						Height      int    `json:"height"`
-						WithPadding int    `json:"with_padding"`
-					} `json:"image"`
-					Id         int    `json:"id"`
-					OwnerId    int    `json:"owner_id"`
-					Title      string `json:"title"`
-					IsFavorite bool   `json:"is_favorite"`
-					TrackCode  string `json:"track_code"`
-					Type       string `json:"type"`
-					Views      int    `json:"views"`
-					LocalViews int    `json:"local_views"`
-					Platform   string `json:"platform"`
-				} `json:"video,omitempty"`
-			} `json:"attachments"`
-			PostSource struct {
-				Type string `json:"type"`
-			} `json:"post_source"`
-			Comments struct {
-				CanPost       int  `json:"can_post"`
-				CanClose      int  `json:"can_close"`
-				Count         int  `json:"count"`
-				GroupsCanPost bool `json:"groups_can_post"`
-			} `json:"comments"`
-			Likes struct {
-				CanLike    int `json:"can_like"`
-				Count      int `json:"count"`
-				UserLikes  int `json:"user_likes"`
-				CanPublish int `json:"can_publish"`
-			} `json:"likes"`
-			Reposts struct {
-				Count        int `json:"count"`
-				WallCount    int `json:"wall_count"`
-				MailCount    int `json:"mail_count"`
-				UserReposted int `json:"user_reposted"`
-			} `json:"reposts"`
-			Views struct {
-				Count int `json:"count"`
-			} `json:"views"`
-			Donut struct {
-				IsDonut bool `json:"is_donut"`
-			} `json:"donut"`
-			ShortTextRate float64 `json:"short_text_rate"`
-			Hash          string  `json:"hash"`
-			Edited        int     `json:"edited,omitempty"`
-		} `json:"items"`
-	} `json:"response"`
-}
 type User struct {
 	Id       primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
 	Username string             `json:"username" binding:"required"`
 	Balance  int                `bson:"balance" json:"balance"`
 	Password string             `json:"password" binding:"required"`
-	Role     string             `json:"role" `
+	Role     string             `json:"role" bson:"role"`
+	Cart     []CartItem         `json:"cart" json:"cart"`
+	Stock    []StockItem        `json:"stock" json:"stock"`
+}
+type CartItem struct {
+	Item  DonatItem `json:"item"`
+	Count int       `json:"count"`
+}
+type StockItem struct {
+	Item  DonatItem `json:"item"`
+	Count int       `json:"count"`
+}
+
+type DonatItem struct {
+	Id          primitive.ObjectID `json:"id" bson:"id"`
+	Name        string             `json:"name" bson:"name"`
+	Description string             `json:"description" bson:"description"`
+	Category    string             `json:"category" bson:"category"`
+	ImageUrl    string             `json:"imageUrl" bson:"imageUrl"`
+	Price       int                `json:"price" bson:"price"`
+	Rank        int                `json:"rank" bson:"rank"`
+	Attachments []DonatAttachments `json:"attachments" bson:"attachments"`
+}
+type DonatAttachments struct {
+	Name        string `json:"name" bson:"name"`
+	Description string `json:"description" bson:"description"`
+	ImageUrl    string `json:"imageUrl" bson:"imageUrl"`
 }

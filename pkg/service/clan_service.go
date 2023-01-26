@@ -18,6 +18,7 @@ func (c ClanService) GetTopClans() ([]model.Clan, error) {
 }
 
 func (c ClanService) GetClans() ([]model.Clan, error) {
+
 	return c.repo.GetClans()
 }
 

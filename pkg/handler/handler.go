@@ -48,6 +48,19 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		api.GET("/clanByName/:name", h.GetClanByName)
 		api.GET("/vk", h.GetVkPosts)
 		api.GET("/client", h.GameClientDownload)
+
+		shop := api.Group("/shop")
+		{
+			shop.GET("/all", h.GetALlShopItems)
+			shop.GET("/:category", h.GetShopItemsByCategory)
+			shop.POST("/", h.InsertItemIntoShop)
+		}
+	}
+	user := router.Group("/user", h.userIdentity)
+	{
+		user.GET("/", h.GetUser)
+		user.GET("/name", h.GetUserName)
+
 	}
 
 	return router

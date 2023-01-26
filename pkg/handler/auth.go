@@ -22,7 +22,7 @@ func (h *Handler) signUp(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Пользователь уже существует"})
 		return
 	}
-	id, err := h.services.Authorization.CreateUser(user)
+	id, err := h.services.UserI.CreateUser(user)
 	if err != nil {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -53,10 +53,10 @@ func (h *Handler) checkUserName(c *gin.Context) {
 	username := c.Param("name")
 
 	if exist := h.services.CheckUserName(username); exist {
-		c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Пользователь уже существует"})
+		c.JSON(http.StatusOK, gin.H{"alreadyExists": true})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Имя свободно"})
+	c.JSON(http.StatusOK, gin.H{"alreadyExists": false})
 	return
 }

@@ -11,13 +11,25 @@ type Service struct {
 	PlayerI
 	ClanI
 	VkI
+	UserI
+	ShopI
 }
-type Authorization interface {
+
+type ShopI interface {
+	GetAll() ([]model.DonatItem, error)
+	InsertItem(item model.DonatItem) error
+}
+
+type UserI interface {
+	GetUserById(id primitive.ObjectID) (model.User, error)
 	CreateUser(user model.User) (interface{}, error)
 	CheckUserName(name string) bool
+	GetUserName(id primitive.ObjectID) (string, error)
+}
+
+type Authorization interface {
 	GenerateAccessToken(username, password string) (string, error)
 	ParseAccessToken(token string) (primitive.ObjectID, error)
-	GetUserById(id primitive.ObjectID) (model.User, error)
 }
 
 type PlayerI interface {
@@ -43,6 +55,8 @@ func NewService(repo *repository.Repository) *Service {
 		PlayerI:       NewPlayerService(repo.PlayerI),
 		ClanI:         NewClanService(repo.ClanI),
 		VkI:           NewVkService(repo.VkI),
-		Authorization: NewAuthService(repo.Authorization),
+		Authorization: NewAuthService(repo.UserI),
+		UserI:         NewUserService(repo.UserI),
+		ShopI:         NewShopService(repo.ShopI),
 	}
 }

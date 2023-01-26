@@ -11,22 +11,33 @@ type Repository struct {
 	Authorization
 	ClanI
 	VkI
+	UserI
+	ShopI
 }
 
 func NewRepository(m *mongo.Client) *Repository {
 	return &Repository{
-		PlayerI:       NewPlayerRepository(m),
-		ClanI:         NewClanRepository(m),
-		VkI:           NewVkRepository(m),
-		Authorization: NewAuthRepository(m),
+		PlayerI: NewPlayerRepository(m),
+		ClanI:   NewClanRepository(m),
+		VkI:     NewVkRepository(m),
+		ShopI:   NewShopRepository(m),
+		UserI:   NewUserRepository(m),
 	}
 }
 
-type Authorization interface {
-	CreateUser(user model.User) (interface{}, error)
-	GetUser(username, password string) (model.User, error)
+type ShopI interface {
+	GetAll() ([]model.DonatItem, error)
+	InsertItem(item model.DonatItem) error
+}
+
+type UserI interface {
+	GetUserByCredentials(username, password string) (model.User, error)
 	GetUserById(id primitive.ObjectID) (model.User, error)
 	GetUserByName(name string) (model.User, error)
+	CreateUser(user model.User) (interface{}, error)
+}
+
+type Authorization interface {
 }
 type PlayerI interface {
 	GetPlayers() ([]model.Player, error)

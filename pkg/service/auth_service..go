@@ -5,33 +5,19 @@ import (
 	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/globalskye/RustServerInfo-back-end.git/pkg/model"
+
 	"github.com/globalskye/RustServerInfo-back-end.git/pkg/repository"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
+
 	"os"
 	"time"
 )
 
 type AuthService struct {
-	repo repository.Authorization
+	repo repository.UserI
 }
 
-func (a *AuthService) CheckUserName(name string) bool {
-	_, err := a.repo.GetUserByName(name)
-
-	if err != mongo.ErrNoDocuments {
-		return true
-	}
-
-	return false
-}
-
-func (a *AuthService) GetUserById(id primitive.ObjectID) (model.User, error) {
-	return a.repo.GetUserById(id)
-}
-
-func NewAuthService(repo repository.Authorization) *AuthService {
+func NewAuthService(repo repository.UserI) *AuthService {
 	return &AuthService{repo: repo}
 }
 
@@ -40,12 +26,6 @@ type jwtTokenClaims struct {
 	UserId primitive.ObjectID `json:"_id"`
 }
 
-func (a *AuthService) CreateUser(user model.User) (interface{}, error) {
-	user.Password = generateHashPassword(user.Password)
-	user.Id = primitive.NewObjectID()
-	return a.repo.CreateUser(user)
-
-}
 func generateHashPassword(password string) string {
 	hash := sha256.New()
 	hash.Write([]byte(password))
@@ -53,7 +33,7 @@ func generateHashPassword(password string) string {
 }
 
 func (a *AuthService) GenerateAccessToken(username, password string) (string, error) {
-	user, err := a.repo.GetUser(username, generateHashPassword(password))
+	user, err := a.repo.GetUserByCredentials(username, generateHashPassword(password))
 	if err != nil {
 		return "", err
 	}
@@ -80,6 +60,7 @@ func (a *AuthService) ParseAccessToken(accessToken string) (primitive.ObjectID, 
 	if !ok {
 		return primitive.ObjectID{}, errors.New("bad token claims type")
 	}
+
 	return claims.UserId, nil
 
 }

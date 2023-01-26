@@ -101,8 +101,11 @@ func (u PlayerRepository) GetTopKillers() ([]model.Player, error) {
 func (u PlayerRepository) GetPlayers() ([]model.Player, error) {
 	db := u.db.Database(dbName)
 	coll := db.Collection(collectionName)
+	queryOptions := &options.FindOptions{}
+	queryOptions.SetSort(bson.D{{"killedPlayers", -1}})
+
 	var result []model.Player
-	cursor, err := coll.Find(context.Background(), bson.D{})
+	cursor, err := coll.Find(context.Background(), bson.D{}, queryOptions)
 	if err != nil {
 		return nil, err
 	}

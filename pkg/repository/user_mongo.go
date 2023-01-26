@@ -9,15 +9,15 @@ import (
 	"os"
 )
 
-type AuthRepository struct {
+type UserRepository struct {
 	db *mongo.Client
 }
 
-func NewAuthRepository(db *mongo.Client) *AuthRepository {
-	return &AuthRepository{db: db}
+func NewUserRepository(db *mongo.Client) *UserRepository {
+	return &UserRepository{db: db}
 }
 
-func (a *AuthRepository) GetUserByName(name string) (model.User, error) {
+func (a *UserRepository) GetUserByName(name string) (model.User, error) {
 	db := a.db.Database("global")
 	coll := db.Collection("users")
 
@@ -29,30 +29,19 @@ func (a *AuthRepository) GetUserByName(name string) (model.User, error) {
 	return result, err
 }
 
-func (a *AuthRepository) GetUserById(id primitive.ObjectID) (model.User, error) {
+func (a *UserRepository) GetUserById(id primitive.ObjectID) (model.User, error) {
 	db := a.db.Database("global")
 	coll := db.Collection("users")
 
 	var result model.User
-	err := coll.FindOne(context.Background(), bson.D{{"id", id}}).Decode(&result)
+	err := coll.FindOne(context.Background(), bson.D{{"_id", id}}).Decode(&result)
 	if err != nil {
 		return model.User{}, err
 	}
 	return result, err
 }
 
-func (a *AuthRepository) CreateUser(user model.User) (interface{}, error) {
-	db := a.db.Database(os.Getenv("MONGODB_DATABASE"))
-	collection := db.Collection("users")
-
-	res, err := collection.InsertOne(context.Background(), user)
-	if err != nil {
-		return primitive.ObjectID{}, err
-	}
-
-	return res.InsertedID, err
-}
-func (a *AuthRepository) GetUser(username, password string) (model.User, error) {
+func (a *UserRepository) GetUserByCredentials(username, password string) (model.User, error) {
 	db := a.db.Database(os.Getenv("MONGODB_DATABASE"))
 	collection := db.Collection("users")
 
@@ -63,4 +52,15 @@ func (a *AuthRepository) GetUser(username, password string) (model.User, error) 
 	}
 	return user, err
 
+}
+func (a *UserRepository) CreateUser(user model.User) (interface{}, error) {
+	db := a.db.Database(os.Getenv("MONGODB_DATABASE"))
+	collection := db.Collection("users")
+
+	res, err := collection.InsertOne(context.Background(), user)
+	if err != nil {
+		return primitive.ObjectID{}, err
+	}
+
+	return res.InsertedID, err
 }

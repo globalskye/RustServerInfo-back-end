@@ -9,7 +9,7 @@ import (
 )
 
 func NewMongoConnect() (*mongo.Client, error) {
-
+	
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(os.Getenv("MONGODB_URI")))
 	if err != nil {
 		return nil, err

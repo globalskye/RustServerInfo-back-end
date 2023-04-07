@@ -1,0 +1,20 @@
+{
+  "FoldersPaths" : [
+    "logs",
+    "userdata"
+  ],
+  "FilesPaths": [
+    "oxide/data/TopFarmer.json",
+    "oxide/data/oxide.users.data"
+  ],
+  "FilesPathsOld": [
+    "rust_users.txt",
+    "rust_clans.txt",
+    "rust_island_2013.sav"
+  ],
+  "WipeBlockCfg" : [
+    {"P250": 90},
+    {"M4": 360},
+    {"Revolver": 60},
+  ]
+}

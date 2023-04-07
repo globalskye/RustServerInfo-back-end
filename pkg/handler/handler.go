@@ -36,6 +36,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	api := router.Group("/api")
 	{
+
 		api.GET("/players", h.GetAllPlayers)
 		api.GET("/clans", h.GetAllClans)
 		api.GET("/online", h.GetOnline)
@@ -53,7 +54,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			shop.GET("/all", h.GetALlShopItems)
 			shop.GET("/:category", h.GetShopItemsByCategory)
-			shop.POST("/", h.InsertItemIntoShop)
+			shop.POST("/item", h.InsertItemIntoShop)
 		}
 	}
 	user := router.Group("/user", h.userIdentity)

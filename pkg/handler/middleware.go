@@ -54,3 +54,9 @@ func (h *Handler) userIdentity(c *gin.Context) {
 
 	return
 }
+func (h *Handler) adminIdentity(c *gin.Context) {
+	if value, _ := c.Get("role"); value != "admin" {
+		c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"message": "U dont have access"})
+	}
+	c.Next()
+}

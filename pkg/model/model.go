@@ -6,23 +6,24 @@ import (
 )
 
 type Player struct {
-	Id               primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
-	SteamId          int                `json:"steamId" bson:"steamId"`
-	ClanName         string             `json:"clanName" bson:"clanName"`
-	Name             string             `json:"name" bson:"name"`
-	Hwid             string             `json:"hwid" bson:"hwid"`
-	Rank             int                `json:"rank" bson:"rank"`
-	FirstConnectTime time.Time          `json:"firstConnectTime" bson:"firstConnectTime"`
-	LastConnectTime  time.Time          `json:"lastConnectTime" bson:"lastConnectTime"`
-	Balance          int                `json:"balance" bson:"balance"`
-	KilledPlayers    int                `json:"killedPlayers" bson:"killedPlayers"`
-	KilledMutants    int                `json:"killedMutants" bson:"killedMutants"`
-	KilledAnimals    int                `json:"killedAnimals" bson:"killedAnimals"`
-	Deaths           int                `json:"deaths" bson:"deaths"`
-	Kits             []KitInfo          `json:"kits" bson:"kits"`
-	Farm             PlayerTopFarm      `json:"farm" bson:"farm"`
-	Online           int                `json:"online" bson:"online"`
-	Raid             float32            `json:"raid" bson:"raid"`
+	Id                primitive.ObjectID `bson:"_id" json:"_id,omitempty"`
+	SteamId           int                `json:"steamId" bson:"steamId"`
+	ClanName          string             `json:"clanName" bson:"clanName"`
+	Name              string             `json:"name" bson:"name"`
+	Hwid              string             `json:"hwid" bson:"hwid"`
+	Rank              int                `json:"rank" bson:"rank"`
+	OnlineOnServerNow bool               `json:"onlineOnServerNow"`
+	FirstConnectTime  time.Time          `json:"firstConnectTime" bson:"firstConnectTime"`
+	LastConnectTime   time.Time          `json:"lastConnectTime" bson:"lastConnectTime"`
+	Balance           int                `json:"balance" bson:"balance"`
+	KilledPlayers     int                `json:"killedPlayers" bson:"killedPlayers"`
+	KilledMutants     int                `json:"killedMutants" bson:"killedMutants"`
+	KilledAnimals     int                `json:"killedAnimals" bson:"killedAnimals"`
+	Deaths            int                `json:"deaths" bson:"deaths"`
+	Kits              []KitInfo          `json:"kits" bson:"kits"`
+	Farm              PlayerTopFarm      `json:"farm" bson:"farm"`
+	Online            int                `json:"online" bson:"online"`
+	Raid              float32            `json:"raid" bson:"raid"`
 }
 
 type PlayerTopFarm struct {
@@ -57,8 +58,7 @@ type Clan struct {
 	Level           int                `json:"level" bson:"level"`
 	Experience      int                `json:"experience" bson:"experience"`
 	MembersSteamIds []int              `json:"membersSteamIds" bson:"membersSteamIds"`
-
-	Members []Player `json:"members" bson:"members"`
+	Members         []Player           `json:"members" bson:"members"`
 }
 type VkPost struct {
 	Items []VkPostItem `bson:"items" json:"items"`
@@ -91,7 +91,7 @@ type StockItem struct {
 }
 
 type DonatItem struct {
-	Id          primitive.ObjectID `json:"id" bson:"id"`
+	Id          primitive.ObjectID `json:"_id" bson:"_id"`
 	Name        string             `json:"name" bson:"name"`
 	Description string             `json:"description" bson:"description"`
 	Category    string             `json:"category" bson:"category"`

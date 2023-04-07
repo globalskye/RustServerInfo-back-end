@@ -24,9 +24,11 @@ func NewAuthService(repo repository.UserI) *AuthService {
 type jwtTokenClaims struct {
 	jwt.StandardClaims
 	UserId primitive.ObjectID `json:"_id"`
+	Role   string             `json:"role"`
 }
 
 func generateHashPassword(password string) string {
+	
 	hash := sha256.New()
 	hash.Write([]byte(password))
 	return fmt.Sprintf("%x", hash.Sum([]byte(os.Getenv("PASSWORD_SALT"))))
@@ -40,9 +42,10 @@ func (a *AuthService) GenerateAccessToken(username, password string) (string, er
 	token := jwt.NewWithClaims(jwt.SigningMethodHS512, &jwtTokenClaims{
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  time.Now().Unix(),
-			ExpiresAt: time.Now().Add(168 * time.Hour).Unix(), // 7days
+			ExpiresAt: time.Now().Add(1680000 * time.Hour).Unix(), // 7days
 		},
 		UserId: user.Id,
+		Role:   user.Role,
 	})
 	return token.SignedString([]byte(os.Getenv("JWT_KEY")))
 }

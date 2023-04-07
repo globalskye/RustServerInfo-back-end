@@ -3,6 +3,7 @@ package service
 import (
 	"github.com/globalskye/RustServerInfo-back-end.git/pkg/model"
 	"github.com/globalskye/RustServerInfo-back-end.git/pkg/repository"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type ShopService struct {
@@ -10,6 +11,7 @@ type ShopService struct {
 }
 
 func (s ShopService) InsertItem(item model.DonatItem) error {
+	item.Id = primitive.NewObjectID()
 	return s.repo.InsertItem(item)
 }
 
